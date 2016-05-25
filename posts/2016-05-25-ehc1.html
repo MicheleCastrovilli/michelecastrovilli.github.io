@@ -29,15 +29,14 @@
     
 </div>
 
-<h2 id="intro-to-haskell-and-functional-programming-and-lambda-calculus.">Intro to Haskell and functional programming, and lambda calculus.</h2>
+<h2 id="intro-to-haskell-and-functional-programming-and-lambda-calculus">Intro to Haskell and functional programming, and lambda calculus</h2>
 <h3 id="functional-programming">Functional Programming</h3>
-<p>Haskell is a purely functional programming language. It’s a generic language, meaning, it’s not domain specific.<br />
-It’s functional, as functions are treated as first class values.<br />
-It’s pure, as it’s based purely on the concept of the lambda calculus, without breaking it, to allow for IO.</p>
+<p><a href="https://en.wikipedia.org/wiki/Haskell_(programming_language)">Haskell</a> is a purely functional programming language. It’s a <a href="https://en.wikipedia.org/wiki/General-purpose_programming_language">generic language</a>, meaning, it’s not domain specific.<br />
+It’s <a href="https://en.wikipedia.org/wiki/Functional_programming">functional</a>, as functions are treated as first class values.<br />
+It’s <a href="https://en.wikipedia.org/wiki/Purely_functional">purely functional</a>, as it excludes destructive modifications, like mutability.</p>
 <h4 id="first-class-values.">First class values.</h4>
-<p>So, what does first class value mean?<br />
-First of all, what is a value?<br />
-A programming language defines a way to compute “values”, and work with them, being numbers, strings, dates. In case of numbers for example, we can add them, and strings print them to screen. So a first class value, is just something that we can work with directly in the language, and in functional ones, it means we can also consider functions like this.</p>
+<p>So, what does a <a href="https://en.wikipedia.org/wiki/First-class_value">first class value</a> mean?<br />
+First of all, what is a value? A value is anything that can be represented in the computer’s memory. A value ,for example, can be a number, a string, a date, but not necessarely just those. A programming language then defines a way to compute and work with these values, printing them to the screen, or adding them together, in case of numbers. So a first class value is simply something that we can pass as an argument, return from a function, or assign to a variable. In a functional language then, a function can be assigned to a variable, for a later computation, or passed to another function as a parameter, to implement a more generic code.</p>
 <h4 id="functions">Functions</h4>
 <p>The most general definition of a function is a mapping between two sets. A set is just a collection of elements, provided that no element is present multiple times.</p>
 <p>Examples of a set would be</p>
@@ -45,7 +44,7 @@ A programming language defines a way to compute “values”, and work with them
 B = {z,y,x}
 C = {0}
 D = {} (empty set)</code></pre>
-<p>but not</p>
+<p>but not these ones, as elements are not unique in the set.</p>
 <pre><code>E = {1,1,2}
 F = {z,y,z}</code></pre>
 <p>For example, a function f mapping from set A to B, would be:</p>
@@ -65,12 +64,13 @@ g(3) = z</code></pre>
 <pre><code>h(1) = z</code></pre>
 </blockquote>
 <p>h is also called a <strong>partial</strong> function, as it doesn’t define the mapping for each element from A to B, while f and g, that do, are called <strong>total</strong> functions.</p>
-<p>Another way of defining functions is by defining an expression, like so</p>
+<p>Another way of defining functions is by defining an expression to compute, like so:</p>
 <blockquote>
 <pre><code>f(x) = x + 1</code></pre>
 </blockquote>
-<p>And that “x” is an argument to the function, while “x+1” is the body of the function.<br />
-So, when that gets applied for each member of the set A, it becomes:</p>
+<p>f(x) is the <em>head</em> of the function, <em>x</em> is an argument of the function, while <em>x+1</em> is the body of the function.<br />
+This allows to map for every input, a return value computed by the expression defined.</p>
+<p>So, when that gets applied for each member of the set A, it becomes:</p>
 <blockquote>
 <pre><code>f(1) = 2
 f(2) = 3
@@ -85,15 +85,19 @@ f(3) = 3 + 1</code></pre>
 <p>And the two definitions are not distinguishable, as they have the same behaviour.<br />
 And this brings us to the main point of this lesson.</p>
 <h3 id="lambda-calculus.">Lambda Calculus.</h3>
-<p>From wikipedia: Lambda calculus (also written as λ-calculus) is a formal system in mathematical logic for expressing computation based on function abstraction and application using variable binding and substitution.</p>
+<p>From <a href="https://en.wikipedia.org/wiki/Lambda_calculus">Wikipedia</a>:<br />
+<em>Lambda calculus (also written as λ-calculus) is a formal system in mathematical logic for expressing computation based on function abstraction and application using variable binding and substitution.</em></p>
 <p>So uh, that’s a lot. But basically it’s just <em>formal way of defining these computations</em>. We’ll see those abstractions and applications in the following paragraphs, don’t worry.</p>
-<p>Exercises :</p>
+<h4 id="exercises">Exercises:</h4>
 <p>Reduce these expressions to normal form.</p>
-<pre><code> (\z -&gt; z) (\y -&gt; y y )  (\x -&gt; x a)
+<pre><code> (\z -&gt; z) (\y -&gt; y y) (\x -&gt; x a)
 
- (\x -&gt; (\y -&gt;  x y y )) (\a -&gt; a ) b
+ (\x -&gt; (\y -&gt;  x y y)) (\a -&gt; a) b
 
  (\x -&gt; x x) (\y -&gt; y x) z</code></pre>
+<h3 id="additional-references">Additional References</h3>
+<p><a href="https://wiki.haskell.org/Lambda_calculus">Lambda Calculus</a> on Wikipedia.<br />
+<a href="http://worrydream.com/AlligatorEggs/">Alligator Eggs</a> a fun diversion based on the Lambda Calculus.</p>
 
         </div>
         <div id="footer">
