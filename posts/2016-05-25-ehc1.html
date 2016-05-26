@@ -102,6 +102,8 @@ Head     Separator   Body</code></pre>
 <h4 id="alpha-equivalence">Alpha Equivalence</h4>
 <p>The internal name of the variable doesn’t actually matter. The following lambdas are specifying the same behaviour.</p>
 <pre><code>(\x -&gt; x * x)
+(\x' -&gt; x' * x')
+(\x'' -&gt; x'' * x'')
 (\y -&gt; y * y)
 (\z -&gt; z * z)</code></pre>
 <p>We can interchange the name of the bound variables, as long as we don’t use names already in use, inside the lambda expression, like free variables.</p>
@@ -125,7 +127,7 @@ z
 5 z</code></pre>
 <p>And everything is fine again.</p>
 <h4 id="beta-reduction">Beta Reduction</h4>
-<p>And now we reduce. This is the way for the lambda calculus to reduce expressions. The previous examples did introduce the reduction implicitedly, when we remove an abstraction, by removing the head and separator, and replacing each occurrence of the head variable, with the parameter given.</p>
+<p>And now we reduce. This is the way for the lambda calculus to reduce expressions. The previous examples did introduce the reduction implicitly, when we remove an abstraction, by removing the head and separator, and replacing each occurrence of the head variable, with the parameter given.</p>
 <p>Another thing: the separator is right associative, while the function application is left associative. This means <strong>f 3 2</strong>, actually means <strong>(f 3) 2</strong>, while<br />
 <strong>\ x -&gt; \y -&gt; x * y</strong> means <strong>\x -&gt; (\y -&gt; x * y)</strong>.</p>
 <p>Let’s look at some examples.</p>
@@ -167,6 +169,12 @@ y
 <pre><code>(\x y -&gt; x * y)
 (\x -&gt; \y -&gt; x * y)
 (\x -&gt; (\y -&gt; x * y))</code></pre>
+<p>Even these ones.</p>
+<pre><code>(\x y z -&gt; a * x + y * z) -- a is a free variable
+(\x -&gt; \y z -&gt; a * x + y * z)
+(\x -&gt; \y -&gt; \z -&gt; a * x + y * z)
+(\x -&gt; (\y z -&gt; a * x + y * z))
+(\x -&gt; (\y -&gt; (\z -&gt; a * x + y * z)))</code></pre>
 <p>Multiple parameters are basically functions returning other functions, with one less parameter to fill in.</p>
 <h4 id="combinators">Combinators</h4>
 <p>Just a quick note: these are lambda expressions that contain no free variables. They just combine the arguments they were given.</p>
@@ -174,6 +182,7 @@ y
 (\x y -&gt; y x)
 (\x y z -&gt; z x y)
 (\x y z -&gt; x y x)
+(\x y z -&gt; x*y)
 ...</code></pre>
 <h4 id="divergence">Divergence</h4>
 <p>These are lambda expressions that when beta reduced, they don’t get simpler, and computation regarding these terms cannot end.</p>
@@ -200,6 +209,20 @@ y
 (z ((y y x)))
 (z (y y x))
 z (y y x)</code></pre>
+<hr />
+<pre><code>(\x -&gt; x y) (\z -&gt; z a) (\x y -&gt; y x) x y
+((\z -&gt; z a) y) (\x y -&gt; y x) x y
+(y a) (\x y -&gt; y x) x y
+y a (\x y -&gt; y x) x y -- we cannot reduce anymore, as
+                      -- appplication is left associative
+(((y a) (\x y -&gt; y x)) x) y</code></pre>
+<hr />
+<pre><code>(\x y -&gt; y x) (\z y -&gt; y z) z
+(\y -&gt; y (\z y -&gt; y z)) z -- uh oh, we should have used alpha eq
+(\y' -&gt; y' (\z y -&gt; y z)) z
+(z (\z y -&gt; y z))         -- this is stil fine though, the z at
+[1] [2]    [3]            -- [1] is free, [2] bounds [3], no clash
+z (\z y -&gt; y z)</code></pre>
 <h4 id="exercises">Exercises:</h4>
 <p>Reduce these expressions to the normal form.</p>
 <pre><code> (\z -&gt; z) (\y -&gt; y y) (\x -&gt; x a)
@@ -209,7 +232,12 @@ z (y y x)</code></pre>
  (\x -&gt; x x) (\y -&gt; y x) z</code></pre>
 <h3 id="additional-references">Additional References</h3>
 <p><a href="https://wiki.haskell.org/Lambda_calculus">Lambda Calculus</a> on the Haskell Wiki.<br />
-<a href="http://worrydream.com/AlligatorEggs/">Alligator Eggs</a> a fun diversion based on the Lambda Calculus.</p>
+<a href="http://worrydream.com/AlligatorEggs/">Alligator Eggs</a> a fun diversion based on the Lambda Calculus.<br />
+<a href="http://haskellbook.com/">Haskell Book</a>, from which this lesson was structured and inspired by. While I’ll be following a bit of structure from that book, I’ll try to keep the content original, making up different exercises, and explaining in my own words the concepts, but still huge thanks to Christopher Allen and Julie Moronuki.<br />
+<a href="http://www.itu.dk/people/sestoft/lamreduce/">Lambda reducer</a>, tool you can use to check the right passages, and whether the solution is correct or not. Only difference, it uses . instead of -&gt;, which means that:</p>
+<pre><code>(\x y -&gt; x y)</code></pre>
+<p>becomes instead this.</p>
+<pre><code>(\x y . x y)</code></pre>
 
         </div>
         <div id="footer">
