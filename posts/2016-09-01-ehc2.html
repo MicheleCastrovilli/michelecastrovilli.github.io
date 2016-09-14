@@ -32,7 +32,7 @@
 
 <h3 id="types-and-syntax-part-1">Types and Syntax: Part 1</h3>
 <h4 id="defining-functions">Defining functions</h4>
-<p>An Haskell function is defined at top level with an identifier (a name), followed by the names of the arguments separated by spaces, not commas. After those names, which can also be missing in case of a function with no arguments, there is an <code>=</code> sign (equals), which stands for a function definition, followed by an Haskell expression. I also showed here the form expressed with lambda calculus. In Haskell, a convention is that, similar functions, that do similar things, are denoted by <a href="https://en.wikipedia.org/wiki/Prime_(symbol)">primes</a>.</p>
+<p>A Haskell function is defined at top level with an identifier (a name), followed by the names of the arguments separated by spaces, not commas (or commata). After those names, which can also be missing in case of a function with no arguments, there is an <code>=</code> sign (equals), which stands for a function definition, followed by an Haskell expression. I also showed here the form expressed with lambda calculus. In Haskell, a convention is that similar functions that do similar things are denoted by <a href="https://en.wikipedia.org/wiki/Prime_(symbol)">primes</a>.</p>
 <p>In this example, <code>function2</code> and <code>function2'</code> express the same function, same goes with function3 and its variations.</p>
 <div class="sourceCode" startFrom="1"><table class="sourceCode haskell numberLines"><tr class="sourceCode"><td class="lineNumbers"><pre>1
 2
@@ -60,13 +60,13 @@ function3 x y <span class="fu">=</span> x <span class="fu">+</span> y
 function3' x  <span class="fu">=</span> \y <span class="ot">-&gt;</span> x <span class="fu">+</span> y
 function3''   <span class="fu">=</span> \x y <span class="ot">-&gt;</span> x <span class="fu">+</span> y
 function3'''  <span class="fu">=</span> \x <span class="ot">-&gt;</span> \y <span class="ot">-&gt;</span> x <span class="fu">+</span> y</code></pre></td></tr></table></div>
-<p>If we type this code into a file, calling it <code>Lesson2.hs</code>, we can play with the definitions by calling the program <code>ghci</code>.</p>
+<p>If we type this code into a file, calling it <code>Lesson2.hs</code>, we can play with the definitions by running the program <code>ghci</code> in a terminal, in the same directory as the file.</p>
 <pre><code>Prelude&gt; :l Lesson2.hs 
 [1 of 1] Compiling Lesson2          ( Lesson2.hs, interpreted )
 Ok, modules loaded: Lesson2.
 *Lesson2&gt; </code></pre>
-<p>We can now play with these definitions by simply writing an expression, followed by an enter, to confirm the input, a standard REPL environment.</p>
-<p>For example, try out:</p>
+<p>We can now play with these definitions by simply writing an expression, followed by the Return key to confirm the input — a standard <a href="https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop">REPL</a> environment.</p>
+<p>For example, try:</p>
 <ul>
 <li><code>function1</code></li>
 <li><code>function2 3</code></li>
@@ -76,8 +76,8 @@ Ok, modules loaded: Lesson2.
 <li><code>function2 function1</code></li>
 <li><code>function3 (function2 function1) function1</code></li>
 </ul>
-<p>Also of note, the difference of the calling syntax. In a C-like syntax, it should be <code>function3(3,4)</code> while in Haskell white space is our divider between arguments, becoming this: <code>function3 3 4</code>. For a more intricate expression, like function3(1+3,4), in Haskell we need parentheses, like so: function3 (1+3) 4.</p>
-<p>The back ticks `, when they enclose a function identifier, make that function infix, rather than the standard prefix form.</p>
+<p>Also of note, the difference of the calling syntax. In a C-like syntax, it should be <code>function3(3,4)</code> while in Haskell white space is our divider between arguments, becoming this: <code>function3 3 4</code>. For a more intricate expression, like <code>function3(1+3,4)</code>, in Haskell we need parentheses, like so: <code>function3 (1+3) 4</code>.</p>
+<p>The back ticks `, when they enclose a function identifier, make that function <a href="https://en.wikipedia.org/wiki/Infix_notation">infix</a> rather than the standard <a href="https://en.wikipedia.org/wiki/Polish_notation">prefix</a> form.</p>
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="co">-- Prefix</span>
 f <span class="dv">3</span> <span class="dv">4</span>
 
@@ -86,8 +86,7 @@ f <span class="dv">3</span> <span class="dv">4</span>
 
 <span class="co">-- There is no suffix form in Haskell, but it would be</span>
 <span class="dv">3</span> <span class="dv">4</span> f</code></pre></div>
-<p>When calling functions, the arguments are separated by spaces, and are called in the same order as the definition.</p>
-<p>For example:</p>
+<p>When calling functions, the arguments are separated by spaces, and are called in the same order as the definition, for example:</p>
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">function3 x y <span class="fu">=</span> x <span class="fu">+</span> y
 
 function3 <span class="dv">3</span> <span class="dv">10</span>
@@ -95,30 +94,30 @@ function3 <span class="dv">3</span> <span class="dv">10</span>
 (\y <span class="ot">-&gt;</span> <span class="dv">3</span> <span class="fu">+</span> y) <span class="dv">10</span>
 (<span class="dv">3</span> <span class="fu">+</span> <span class="dv">10</span>)
 <span class="dv">13</span></code></pre></div>
-<p>This shows two things, how the parameters are evaluated, it’s the same as the lambda calculus. Furthermore, it’s noted how functions take one parameter at a time, giving out another function in the process, which is then applied again, to the other argument.</p>
+<p>This shows how parameters are evaluated, the same way as the lambda calculus. Furthermore, it’s noted how functions take one parameter at a time, giving out another function in the process, which is then applied again, to the other argument.</p>
 <h4 id="basic-types">Basic Types</h4>
 <p>Some of the primitive types Haskell defines are:</p>
 <ul>
 <li><code>Int</code> which is a machine bounded integer, depending on the architecture. It has a fixed size, and so maximum bounds.</li>
 <li><code>Integer</code> is an arbitrary large integer, which uses more memory depending on the size required to represent the number. It’s also some order of magnitude slower.</li>
 <li><code>Char</code> represents a character. More technically, is an enumeration of the values representing Unicode.</li>
-<li><code>Float</code> and <code>Double</code> for representing floating point numbers, in a single or double precision.</li>
+<li><code>Float</code> and <code>Double</code> for representing floating point numbers, in single or double precision.</li>
 </ul>
-<p>Many more types are defined, but, those are defined in terms of Haskell itself, thanks to Algebraic Data Types, ADT for short. One of these, for example, are Boolean values.</p>
+<p>Many more types are defined, but those are defined in terms of Haskell itself, thanks to Algebraic Data Types, ADT for short. One of these are Boolean values.</p>
 <p>Now, onto signatures. Signatures are the way of describing a function input and output types. For example:</p>
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">function4 ::</span> <span class="dt">Int</span>
 function4 <span class="fu">=</span> <span class="dv">4</span></code></pre></div>
-<p>The first line represents the function signature, while the second line, is the function definition.<br />
-The function signature is denoted by the <code>::</code> symbol, and the type itself is on the left hand side of it.</p>
-<p>We can use these signatures also inside expressions, to strengthen our reasoning about the types used. Examples:</p>
+<p>The first line represents the function signature, while the second line is the function definition.<br />
+The function signature is denoted by the <code>::</code> symbol and the type itself is on the left hand side of it. The right hand side of the <code>::</code> denotes the function identifier, or expression to annotate.</p>
+<p>Using this symbol with expressions, can also strengthen the reasoning about the types used, to stop a wrong type from propagating throughout the program. Examples:</p>
 <ul>
 <li><div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">(<span class="dv">3</span><span class="ot"> ::</span> <span class="dt">Int</span>) <span class="fu">+</span> <span class="dv">4</span></code></pre></div></li>
 <li><div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">((<span class="dv">3</span><span class="ot"> ::</span> <span class="dt">Int</span>)<span class="ot"> ::</span> <span class="dt">Int</span>) <span class="fu">+</span> <span class="dv">4</span></code></pre></div></li>
 <li><div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">(<span class="dv">3</span><span class="ot"> ::</span> <span class="dt">Int</span>) <span class="fu">+</span> (<span class="dv">4</span><span class="ot"> ::</span> <span class="dt">Int</span>)</code></pre></div></li>
-<li><p>This won’t compile, due to the different types in the (+) operator.</p>
+<li><p>This won’t compile, due to the different types in the <code>(+)</code>operator.</p>
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">(<span class="dv">3</span><span class="ot"> ::</span> <span class="dt">Int</span>) <span class="fu">+</span> (<span class="dv">4</span><span class="ot"> ::</span> <span class="dt">Float</span>)</code></pre></div></li>
 </ul>
-<p>Now, for functions with parameters, there is a type operator, called (-&gt;). This is different from the (-&gt;) in a lambda abstraction, as the lambda one occurs in an expression scope, while this one occurs in the type scope. But, it’s better explained with examples.</p>
+<p>Now, for functions with parameters, there is a type operator, called <code>(-&gt;)</code>. This is different from the <code>(-&gt;)</code> in a lambda abstraction, as the lambda one occurs in an expression scope, while this one occurs in the type scope. Explaining with examples:</p>
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">function5 ::</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> <span class="dt">Int</span>
 function5     x  <span class="fu">=</span>  x <span class="fu">+</span> <span class="dv">1</span>
 
@@ -132,11 +131,11 @@ function6     x      y  <span class="fu">=</span>  x <span class="fu">*</span> y
 
 <span class="ot">function6' ::</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> <span class="dt">Int</span>
 function6' <span class="fu">=</span>  \x  <span class="ot">-&gt;</span> \y  <span class="ot">-&gt;</span> x <span class="fu">*</span> y</code></pre></div>
-<p>And, since the type operator (-&gt;) is also right associative, it means that, writing</p>
+<p>And, since the type operator <code>(-&gt;)</code> is also right associative, which means that writing</p>
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="dt">Int</span> <span class="ot">-&gt;</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> <span class="dt">Int</span></code></pre></div>
 <p>actually means</p>
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="dt">Int</span> <span class="ot">-&gt;</span> (<span class="dt">Int</span> <span class="ot">-&gt;</span> <span class="dt">Int</span>)</code></pre></div>
-<p>which tells us again, that functions actually accept only one parameter at a time, giving back another function that accepts a parameter less.</p>
+<p>which tells us again, that functions actually accept only one parameter at a time, giving back another function that accepts <a href="https://en.wikipedia.org/wiki/Arity">a parameter less</a> (this also refers to currying and partial application, both linked above).</p>
 <p>For example, let’s expand this call.</p>
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">function6 <span class="dv">3</span>
 function6 x y <span class="fu">=</span> x <span class="fu">*</span> y <span class="co">-- definition</span>
@@ -152,7 +151,7 @@ function6' <span class="dv">3</span>
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="dt">Int</span> <span class="ot">-&gt;</span> <span class="dt">Int</span></code></pre></div>
 <h4 id="let-and-where-syntax">Let and where syntax</h4>
 <h5 id="lets-do-this.">Let’s do this.</h5>
-<p>The syntax is kinda like</p>
+<p>The syntax is <a href="https://www.haskell.org/onlinereport/haskell2010/haskellch3.html#x8-440003.12">kinda like</a>:</p>
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="co">-- single line</span>
 <span class="kw">let</span> <span class="fu">&lt;</span>id<span class="fu">&gt;</span> <span class="fu">&lt;</span>params<span class="fu">&gt;</span> <span class="fu">=</span> <span class="fu">&lt;</span>expression<span class="fu">&gt;</span> <span class="kw">in</span> <span class="fu">&lt;</span>expression, containing also the id bind<span class="fu">&gt;</span>
 
@@ -191,7 +190,7 @@ function7' x y <span class="fu">=</span> <span class="kw">let</span> sum <span c
                      product <span class="fu">=</span> x <span class="fu">*</span> y
                      result <span class="fu">=</span> sum <span class="fu">+</span> product
                  <span class="kw">in</span> result</code></pre></div>
-<p>Another way of defining let bindings, without worrying about indentation is just to use semicolons, albeit it’s way less used.</p>
+<p>Another way of defining let bindings without worrying about indentation is to use curly braces and semicolons, albeit it’s way less used, mostly for generating Haskell programs procedurally.</p>
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">function7'' ::</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> <span class="dt">Int</span> <span class="ot">-&gt;</span> <span class="dt">Int</span> 
 function7'' x y <span class="fu">=</span> <span class="kw">let</span> {
   sum <span class="fu">=</span> x <span class="fu">+</span> y;
@@ -200,7 +199,7 @@ function7'' x y <span class="fu">=</span> <span class="kw">let</span> {
                    <span class="co">-- are still only functions</span>
   } <span class="kw">in</span> f sum product</code></pre></div>
 <h5 id="where-are-we-again">Where are we again?</h5>
-<p>Another way of defining temporary bindings inside functions is using a where construct.</p>
+<p>Another way of defining temporary bindings inside functions is using a <a href="https://www.haskell.org/onlinereport/haskell2010/haskellch3.html#x8-460003.13">where construct</a> (note, there is a bit more syntax to explain before properly understanding the link).</p>
 <div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="fu">&lt;</span>functionID<span class="fu">&gt;</span> <span class="fu">&lt;</span>fscope<span class="fu">&gt;</span> <span class="fu">=</span> <span class="fu">&lt;</span>definition<span class="fu">&gt;</span>
   <span class="kw">where</span> <span class="fu">&lt;</span>binding1<span class="fu">&gt;</span> <span class="fu">&lt;</span>params<span class="fu">&gt;</span> <span class="fu">=</span> <span class="fu">&lt;</span>expression <span class="kw">in</span> fscope<span class="fu">&gt;</span> 
         <span class="fu">&lt;</span>binding2<span class="fu">&gt;</span> <span class="fu">...</span> <span class="fu">=</span> <span class="fu">...</span>

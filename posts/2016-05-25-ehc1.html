@@ -32,35 +32,33 @@
 
 <h2 id="intro-to-haskell-and-functional-programming-with-lambda-calculus">Intro to Haskell and Functional Programming with Lambda Calculus</h2>
 <h3 id="functional-programming">Functional Programming</h3>
-<p><a href="https://en.wikipedia.org/wiki/Haskell_(programming_language)">Haskell</a> is a purely functional programming language. It's a <a href="https://en.wikipedia.org/wiki/General-purpose_programming_language">general-purpose programming language</a>, meaning, it's not domain specific.<br />
-It's <a href="https://en.wikipedia.org/wiki/Functional_programming">functional</a>, computation is viewed as evaluating mathematical functions, avoiding changing-state and mutable data, while managing side effects. It's <a href="https://en.wikipedia.org/wiki/Purely_functional">purely functional</a>, as it excludes destructive modifications, like mutability.</p>
+<p><a href="https://en.wikipedia.org/wiki/Haskell_(programming_language)">Haskell</a> is a purely functional programming language. It’s a <a href="https://en.wikipedia.org/wiki/General-purpose_programming_language">general-purpose programming language</a>, meaning, it’s not domain specific. It’s <a href="https://en.wikipedia.org/wiki/Functional_programming">functional</a>, computation is viewed as evaluating mathematical functions, avoiding changing-state and mutable data, while managing side effects. It’s <a href="https://en.wikipedia.org/wiki/Purely_functional">purely functional</a>, as it excludes destructive modifications, like mutability.</p>
 <h4 id="first-class-values.">First class values.</h4>
-<p>So, what is a <a href="https://en.wikipedia.org/wiki/First-class_value">first class value</a>? First of all, what is a value? A value is anything that can be represented in the computer's memory. A value, for example, can be a number, a string or a date, but not necessarily just those. A programming language defines ways to compute and work with these values, printing them to the screen, or adding them together in case of numbers. So, a “first class value” is simply something that we can pass as an argument, return from a function, or assign to a variable. In a functional language a function can also be assigned to a variable for later computation, or can be passed to another function as a parameter to implement a more generic code.</p>
+<p>So, what is a <a href="https://en.wikipedia.org/wiki/First-class_value">first class value</a>? First of all, what is a value? A value is anything that can be represented in a computer’s memory. A value, for example, can be a number, a string or a date, but not necessarily one of those. A programming language defines ways to compute and work with these values, printing them to the screen, or adding them together in case of numbers. A “first class value” is simply something that we can pass as an argument, return from a function, or assign to a variable. In a functional language a function can also be assigned to a variable for later computation, or can be passed to another function as a parameter to implement a more generic code.</p>
 <h4 id="functions">Functions</h4>
 <p>The most general definition of a <a href="https://en.wikipedia.org/wiki/Function_%28mathematics%29">function</a> is a mapping between two sets. A set is just a collection of elements, provided that no element is present multiple times.</p>
-<p>Examples of sets would be:</p>
+<p>Examples of sets:</p>
 <pre><code>A = {1,2,3}
 B = {z,y,x}
 C = {0}
 D = {} (empty set)</code></pre>
-<p>but not these, as elements are not unique in the set.</p>
+<p>Wrong examples of sets, as elements are not unique.</p>
 <pre><code>E = {1,1,2}
 F = {z,y,z}</code></pre>
 <p>For example, a function f mapping from set A to B, would be:</p>
-<pre><code> f(1) = z
- f(2) = y
- f(3) = x</code></pre>
+<pre><code>f(1) = z
+f(2) = y
+f(3) = x</code></pre>
 <p>Or g:</p>
-<pre><code> g(1) = z
- g(2) = z
- g(3) = z</code></pre>
+<pre><code>g(1) = z
+g(2) = z
+g(3) = z</code></pre>
 <p>Or h:</p>
-<pre><code> h(1) = z</code></pre>
-<p>h is also called a <strong>partial</strong> function, as it doesn't map each element from A to B, while f and g, which do, are called <strong>total</strong> functions.</p>
+<pre><code>h(1) = z</code></pre>
+<p>h is also called a <strong>partial</strong> function, as it doesn’t map each element from A to B, while f and g, which do, are called <strong>total</strong> functions.</p>
 <p>Another way of defining a function is by writing an expression to compute, like so:</p>
 <pre><code> f(x) = x + 1</code></pre>
-<p>f denotes the function, <em>x</em> is the argument of the function, while <em>x+1</em> is the body of the function.<br />
-This allows every input to be mapped to a return value computed by the expression.</p>
+<p>f denotes the function, <em>x</em> is the argument of the function, while <em>x+1</em> is the body of the function. This allows every input to be mapped to a return value computed by the expression.</p>
 <p>So, when that gets applied to each member of the set A, it becomes:</p>
 <pre><code> f(1) = 2
  f(2) = 3
@@ -69,33 +67,40 @@ This allows every input to be mapped to a return value computed by the expressio
 <pre><code> f(1) = 1 + 1
  f(2) = 2 + 1
  f(3) = 3 + 1</code></pre>
-<p>The two definitions are not distinguishable, as they have the same behaviour.<br />
-And this brings us to the main point of this lesson:</p>
+<p>The two definitions are not distinguishable, as they have the same behaviour, meaning, for each input element, the output value is the same between the two function definitions. And this brings us to the main point of this lesson:</p>
 <h3 id="lambda-calculus">Lambda Calculus</h3>
-<p>From <a href="https://en.wikipedia.org/wiki/Lambda_calculus">Wikipedia</a>:<br />
-<em>Lambda calculus (also written as λ-calculus) is a formal system in mathematical logic for expressing computation based on function abstraction and application using variable binding and substitution.</em></p>
-<p>So, uh, that's a lot. Basically, the lambda calculus is just a <em>formal way of defining a computation</em>. We'll see those abstractions and applications in the following paragraphs, don't worry.</p>
-<p>So, let's start defining things, shall we?<br />
-Lambda calculus has three lambda terms: expressions, variables and abstractions. Expressions are combinations of variables and abstractions. Variables are just terms for indicating possible inputs. And abstractions are functions, also called lambda. We shall use primarily the Haskell syntax for defining lambda terms.</p>
-<pre><code>\x          -&gt;        x
-Head     Separator   Body</code></pre>
-<p>This is an abstraction. The head of the abstraction is \ (which is shorthand for <span class="math inline"><em>l</em><em>a</em><em>m</em><em>b</em><em>d</em><em>a</em></span> or ‘lambda’) followed by variable name, and the body is an expression which also might be another abstraction. This means that if we apply an argument to this function, that argument will be rewritten for each x in the body.</p>
+<p>From <a href="https://en.wikipedia.org/wiki/Lambda_calculus">Wikipedia</a>: <em>Lambda calculus (also written as λ-calculus) is a formal system in mathematical logic for expressing computation based on function abstraction and application using variable binding and substitution.</em></p>
+<p>So, that’s a lot. Basically, the lambda calculus is just a <em>formal way of defining a computation</em>. We’ll see those abstractions and applications in the following paragraphs, don’t worry.</p>
+<p>So, let’s start defining things, shall we? Lambda calculus defines valid expressions as lambda terms. These terms are built with : variables, (lambda) abstractions and applications.<br />
+Variables are just terms for indicating possible inputs.<br />
+Abstractions are functions, also called lambdas.<br />
+Applications are defined when two lambda terms are applied together.</p>
+<p>Lambda syntax:<br />
+Variable: <strong>x</strong> or <strong>y</strong> or any combination of characters, along with also primes.<br />
+Abstractions: <strong><span class="math inline"><em>λ</em></span>x.t</strong> if <strong>t</strong> is a lambda term, and <strong>x</strong> is a variable.<br />
+Application: if both <strong>t</strong> and <strong>s</strong> are lambda terms, then <strong>(ts)</strong> is a lambda term.<br />
+Example: <strong>(<span class="math inline"><em>λ</em></span>y.y)x</strong></p>
+<p>We shall instead use the Haskell syntax for defining lambda terms.</p>
+<p>Abstraction: -&gt; x Head Separator Body</p>
+<p>Application: (-&gt; y) x</p>
+<p>Comments: (-&gt; x) – This is a comment that extends for the rest – of the line, the indentation is just a stylistic choice.</p>
+<p>This is an abstraction. The head of the abstraction is \ (which is also referred as <span class="math inline"><em>λ</em></span> or ‘lambda’) followed by variable name, and the body is an expression which also might be another abstraction. This means that if we apply an argument to this function, that argument will be replaced for each x in the body.</p>
 <pre><code>(\x -&gt; x) 5
 5
 (\x -&gt; x * x) 3
 3*3</code></pre>
-<p>When applying an argument, we also remove the head of the lambda, leaving us with just the internal expression. The argument in the head of the lambda, is called a bound variable, meaning that the value that variable holds, is bound by the argument passed in.</p>
-<p>By the way, <strong>\x -&gt; x</strong> is called the identity function (id), and it's the simplest abstraction, returning the argument given to it.</p>
+<p>When applying an argument, we also remove the head of the lambda, leaving us with just the internal expression. The argument in the head of the lambda is called a <strong>bound variable</strong>, meaning that the value that variable holds, is bound by the argument passed in.</p>
+<p>By the way, <strong>\x -&gt; x</strong> is called the identity function (id), and it’s the simplest abstraction, returning the argument given to it.</p>
 <h4 id="alpha-equivalence">Alpha Equivalence</h4>
-<p>The internal name of the variable doesn't actually matter. The following lambdas are specifying the same behaviour.</p>
+<p>The internal name of the variable doesn’t actually matter. The following lambdas are specifying the same behaviour.</p>
 <pre><code>(\x -&gt; x * x)
 (\x' -&gt; x' * x')
 (\x'' -&gt; x'' * x'')
 (\y -&gt; y * y)
 (\z -&gt; z * z)</code></pre>
-<p>We can interchange the name of the bound variables, as long as we don't use names already in use, inside the lambda expression, like free variables.</p>
+<p>We can interchange the name of the bound variables, as long as we don’t use names already in use inside the lambda expression, like free variables.</p>
 <h4 id="free-variables">Free variables</h4>
-<p>These are simply variables which aren't bound by an argument, but occur freely in an expression. In the following examples, z will be used as a free variable.</p>
+<p>These are simply variables which aren’t bound by an argument, but occur freely in an expression. In the following examples, z is used as a free variable.</p>
 <pre><code>(\x -&gt; x z)
 (\x -&gt; z x)
 (\x y -&gt; x y z) (\x -&gt; x)
@@ -108,16 +113,15 @@ z
 5 z
 (\z -&gt; z z) 5
 5 5</code></pre>
-<p>And this means that, when there is a clash of names, there is a need to generate a new identifier. This is usually generated by adding a ' (prime) to the variable name.</p>
+<p>And this means that, when there is a clash of names, there is a need to make up a new identifier. This is usually defined by adding a ' (prime) to the variable name.</p>
 <pre><code>(\x -&gt; x z) 5
 (\z' -&gt; z' z) 5
 5 z</code></pre>
 <p>And everything is fine again.</p>
 <h4 id="beta-reduction">Beta Reduction</h4>
-<p>And now we reduce. This is the way for the lambda calculus to reduce expressions. The previous examples introduced the reduction implicitly, when we removed an abstraction, by removing the head and separator, and replaced each occurrence of the head variable, with the parameter given.</p>
-<p>Another thing: the separator is right associative, while the function application is left associative. This means <strong>f 3 2</strong> actually means <strong>(f 3) 2</strong>, while<br />
-<strong>\ x -&gt; \y -&gt; x * y</strong> means <strong>\x -&gt; (\y -&gt; x * y)</strong>.</p>
-<p>Let's look at some examples.</p>
+<p>This is the way for the lambda calculus to reduce expressions to a simpler form, and by doing so, carrying out some computation. The previous examples introduced the reduction implicitly, when we removed an abstraction, by removing the head and separator, and replaced each occurrence of the head variable, with the parameter given.</p>
+<p>Another thing: the separator is right associative, while the function application is left associative. This means <strong>f 3 2</strong> actually means <strong>(f 3) 2</strong>, while <strong>\ x -&gt; \y -&gt; x * y</strong> means <strong>\x -&gt; (\y -&gt; x * y)</strong>.</p>
+<p>Let’s look at some examples.</p>
 <pre><code>(\x -&gt; x) 3
 3
 
@@ -132,7 +136,7 @@ z
 z (\y -&gt; y)</code></pre>
 <p>And now for some more difficult examples, we shall use also alpha equivalence to avoid name clashes.</p>
 <pre><code>(\x -&gt; x y) (\y -&gt; y)
-(\y -&gt; y) y 
+(\y -&gt; y) y
 y
 
 (\x -&gt; \y -&gt; x y) (\y -&gt; y)   -- First we reduce the x
@@ -141,18 +145,18 @@ y
 
 (\x -&gt; \y -&gt; x y) (\y -&gt; y)   -- So, while reducing, we also need
        [1]    [1]             -- to change the name of y parameter
-                              -- at [1], to avoid clashes. 
+                              -- at [1], to avoid clashes.
 
-(\y' -&gt; (\y -&gt; y) y')         -- No more clashes! Let\'s continue 
+(\y' -&gt; (\y -&gt; y) y')         -- No more clashes! Let's continue
                               -- with the body of the lambda as
                               -- there are no more arguments outside.
 
-(\y' -&gt; y')                   -- And here we are, with our usual 
+(\y' -&gt; y')                   -- And here we are, with our usual
                               -- id function again.</code></pre>
-<p>When we cannot reduce anymore, we call that expression <strong>normal form</strong> (actually beta normal form). Each step of reduction also means computing intermediate values. For example, when we have an expression like <code>3+4</code> we can reduce this form further by applying the <code>+</code> operator, and getting <code>7</code> as the result.</p>
+<p>When the reduction process can’t continue anymore, the expression is said to be in <strong>normal form</strong> (actually beta normal form). Each step of reduction also means computing intermediate values. For example, when we have an expression like <code>3+4</code> we can reduce this form further by applying the <code>+</code> operator, and getting <code>7</code> as the result.</p>
 <p>This also introduced…</p>
 <h4 id="multiple-arguments-functions">Multiple Arguments Functions</h4>
-<p>They don't really exist. Well, maybe. They just are nested lambdas. These three definitions are exactly the same.</p>
+<p>They just are nested lambdas. And <a href="https://en.wikipedia.org/wiki/Currying">currying</a>, closely relating <a href="https://en.wikipedia.org/wiki/Partial_application">partial application</a>. I won’t be explaining what those terms mean now exactly, as those two concepts are closely related, and I am not yet prepared to explain the difference properly. We will be seeing these plenty of times though, during the course. These three definitions are exactly the same.</p>
 <pre><code>(\x y -&gt; x * y)
 (\x -&gt; \y -&gt; x * y)
 (\x -&gt; (\y -&gt; x * y))</code></pre>
@@ -172,7 +176,7 @@ y
 (\x y z -&gt; x*y)
 ...</code></pre>
 <h4 id="divergence">Divergence</h4>
-<p>These are lambda expressions that don't get simpler with beta reduction. They can never be reduced to a normal form.</p>
+<p>These are lambda expressions that don’t get simpler with beta reduction. They can never be reduced to a normal form.</p>
 <pre><code>(\x -&gt; x x) (\y -&gt; y y)   -- substitution of x with (\y -&gt; y y)
 ((\y -&gt; y y) (\y -&gt; y y))
 (\y -&gt; y y) (\y -&gt; y y)   -- With alpha equivalence, we already
@@ -184,14 +188,14 @@ y
 (x (\x -&gt; y x x y) z)
 (x y z z y)</code></pre>
 <hr />
-<pre><code>(\x y -&gt; y x) ((\y z -&gt; y y z) y x) z -- we shall use the other syntax 
+<pre><code>(\x y -&gt; y x) ((\y z -&gt; y y z) y x) z -- we shall use the other syntax
    [1]  [1]                           -- for these multiple parameters.
 (\y' -&gt; y' ((\y z -&gt; y y z) y x)) z   -- moved inside the x, renamed
-                                      -- y [1] to y\'
+                                      -- y [1] to y'
 (z ((\y z -&gt; y y z) y x))
      [2]     [2]   [3]
 (z ((\z -&gt; y y z) x))                 -- y as a bound variable in [2]
-                                      -- was replaced with y as a 
+                                      -- was replaced with y as a
                                       -- free variable in [3]
 (z ((y y x)))
 (z (y y x))
@@ -220,10 +224,7 @@ z (\z y -&gt; y z)</code></pre>
 
  (((\x -&gt; (\y -&gt; x y)) (\y -&gt; y)) w)</code></pre>
 <h3 id="additional-references">Additional References</h3>
-<p><a href="https://wiki.haskell.org/Lambda_calculus">Lambda Calculus</a> on the Haskell Wiki.<br />
-<a href="http://worrydream.com/AlligatorEggs/">Alligator Eggs</a> a fun diversion based on the Lambda Calculus.<br />
-<a href="http://haskellbook.com/">Haskell Book</a>, from which this lesson was structured and inspired by. While I'll be following a bit of structure from that book, I'll try to keep the content original, making up different exercises, and explaining in my own words the concepts, but still huge thanks to Christopher Allen and Julie Moronuki.<br />
-<a href="http://www.itu.dk/people/sestoft/lamreduce/">Lambda reducer</a>, tool you can use to check the right passages, and whether the solution is correct or not. Only difference, it uses . instead of -&gt;, which means that:</p>
+<p><a href="https://wiki.haskell.org/Lambda_calculus">Lambda Calculus</a> on the Haskell Wiki. <a href="http://worrydream.com/AlligatorEggs/">Alligator Eggs</a> a fun diversion based on the Lambda Calculus. <a href="http://haskellbook.com/">Haskell Book</a>, from which this lesson was structured and inspired by. While I’ll be following a bit of structure from that book, I’ll try to keep the content original, making up different exercises, and explaining in my own words the concepts, but still huge thanks to Christopher Allen and Julie Moronuki. <a href="http://www.itu.dk/people/sestoft/lamreduce/">Lambda reducer</a>, tool you can use to check the right passages, and whether the solution is correct or not. Only difference, it uses . instead of -&gt;, which means that:</p>
 <pre><code>(\x y -&gt; x y)</code></pre>
 <p>becomes instead this.</p>
 <pre><code>(\x y . x y)</code></pre>
