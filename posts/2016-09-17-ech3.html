@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>A Silly Blog - Euphoria Haskell Course — Part 3</title>
+        <link rel="stylesheet" type="text/css" href="../css/default.css" />
+        <link rel="stylesheet" type="text/css" href="../css/syntax.css" />
+    </head>
+    <body>
+        <div id="header">
+            <div id="logo">
+                <a href="../">A Silly Blog</a>
+            </div>
+            <div id="navigation">
+                <a href="../">Home</a>
+                <a href="../about.html">About</a>
+                <a href="../contact.html">Contact</a>
+                <a href="../archive.html">Archive</a>
+            </div>
+        </div>
+
+        <div id="content">
+            <h1>Euphoria Haskell Course — Part 3</h1>
+
+            <div class="info">
+    Posted on September 17, 2016
+    
+        by viviff
+    
+</div>
+
+<p>To follow the examples, make a new file called “Lesson3.hs”, and copy the contents of <a href="http://rextester.com/LUNIL43444">this link</a> into it. Then open a terminal window in the same folder, run <code>ghci</code>, and subsequently type <code>:l Lesson3.hs</code>.</p>
+<h3 id="types-and-syntax-part-2">Types and Syntax: Part 2</h3>
+<h4 id="type-keyword"><em>Type</em> keyword</h4>
+<p>The <code>type</code> keyword is used to define an alias to some type already existing. This type alias can also be used to give a name to a type expression.</p>
+<p>Examples:</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">type</span> <span class="dt">Age</span> <span class="fu">=</span> <span class="dt">Int</span>
+
+<span class="kw">type</span> <span class="dt">IOFun</span> a <span class="fu">=</span> a <span class="ot">-&gt;</span> <span class="dt">IO</span> ()
+
+<span class="ot">tellAge ::</span> <span class="dt">Age</span> <span class="ot">-&gt;</span> <span class="dt">IO</span> ()
+tellAge age <span class="fu">=</span> putStrLn (<span class="st">&quot;You are &quot;</span> <span class="fu">++</span> show age <span class="fu">++</span> <span class="st">&quot; years old.&quot;</span>)
+
+<span class="ot">tellAge' ::</span> <span class="dt">IOFun</span> <span class="dt">Age</span>
+tellAge' age <span class="fu">=</span> putStrLn (<span class="st">&quot;You are &quot;</span> <span class="fu">++</span> show age <span class="fu">++</span> <span class="st">&quot; years old.&quot;</span>)</code></pre></div>
+<p>The first type alias simply renames <code>Int</code> to <code>Age</code>, without offering any safety on passing normal <code>Int</code> values instead of <code>Age</code> values, ergo it’s mostly done to improve readability on code.</p>
+<p>The second type alias instead, also uses a type parameter, denoted by the character <code>a</code>. The concrete type of <code>a</code>, in a call like <code>IOFun Age</code>, replaces every occourrence of <code>a</code> in the type alias declaration. This means that, the types of <code>tellAge</code> and <code>tellAge'</code> are exactly the same.</p>
+<h4 id="introduction-to-defining-types">Introduction to Defining types</h4>
+<p>As said before, types are simply sets of values. A function that operates on a type expects values from that set. As an example, we will be working with the <code>MyInt</code> type, defined as such:</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">MyInt</span> <span class="fu">=</span> 
+    <span class="dt">One</span> 
+  <span class="fu">|</span> <span class="dt">Two</span> 
+  <span class="fu">|</span> <span class="dt">Three</span>
+  <span class="kw">deriving</span> (<span class="dt">Show</span>)
+
+<span class="co">{-</span>
+<span class="co">Alternative ways:</span>
+
+<span class="co">data MyInt = One | Two | Three</span>
+
+<span class="co">data MyInt = One</span>
+<span class="co">  | Two</span>
+<span class="co">  | Three</span>
+<span class="co">  </span>
+<span class="co">Frowned upon:</span>
+
+<span class="co">data MyInt = One</span>
+<span class="co">  | Two</span>
+<span class="co">                                            | Three</span>
+
+<span class="co">data MyInt = One</span>
+<span class="co">  | Two</span>
+<span class="co"> | Three</span>
+<span class="co">  </span>
+<span class="co">Doesn't compile:</span>
+
+<span class="co">data MyInt = One</span>
+<span class="co">  | Two</span>
+<span class="co">| Three -- Because | is at the top level, with no level of indentation.</span>
+<span class="co">-}</span> </code></pre></div>
+<p>Note about the deriving clause: this is a keyword that lets us automatically define some properties of the type itself, in this case Show lets us call the <code>show</code> function on it, meaning we can print it on console and in the REPL.</p>
+<p>We have so defined the type <code>MyInt</code>, which has as values (and in this case, also constructors): <code>One</code>, <code>Two</code>, <code>Three</code>. A constructor is simply a function that lets us build a value of that type. In this case <code>One</code> (or <code>Two</code> or <code>Three</code>) constructs a value of type <code>MyInt</code>, without any other values as input.</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="dt">One</span><span class="ot"> ::</span> <span class="dt">MyInt</span>
+<span class="dt">Two</span><span class="ot"> ::</span> <span class="dt">MyInt</span>
+<span class="dt">Three</span><span class="ot"> ::</span> <span class="dt">MyInt</span></code></pre></div>
+<h4 id="pattern-matching">Pattern Matching</h4>
+<p>Let’s build a function that, given a MyInt value, gives the successor to it. In case of Three, we will just return the same value.</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">successor ::</span> <span class="dt">MyInt</span> <span class="ot">-&gt;</span> <span class="dt">MyInt</span>
+successor <span class="dt">One</span> <span class="fu">=</span> <span class="dt">Two</span>
+successor <span class="dt">Two</span> <span class="fu">=</span> <span class="dt">Three</span>
+successor <span class="dt">Three</span> <span class="fu">=</span> <span class="dt">Three</span></code></pre></div>
+<p>We defined this function in terms of pattern matching. Instead of using a variable name like <code>x</code>, we simply check which constructor was used to build the <code>MyInt</code> value, and give another value as a result.</p>
+<p>In the REPL, try the following:</p>
+<ul>
+<li><code>successor One</code></li>
+<li><code>successor Two</code></li>
+<li><code>successor Three</code></li>
+<li><code>successor (successor One)</code></li>
+<li><code>map successor [One,Two,Three]</code></li>
+</ul>
+<p>Let’s try something else:</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">toInt<span class="ot"> ::</span> <span class="dt">MyInt</span> <span class="ot">-&gt;</span> <span class="dt">Int</span>
+toInt <span class="dt">One</span> <span class="fu">=</span> <span class="dv">1</span>
+toInt <span class="dt">Two</span> <span class="fu">=</span> <span class="dv">2</span>
+toInt <span class="dt">Three</span> <span class="fu">=</span> <span class="dv">3</span></code></pre></div>
+<p>Nothing too new, just another example of functions.</p>
+<p>Let’s now implement the <code>constantThree</code> function. This function will take a MyInt value, and return Three as a result, no matter the input.</p>
+<p>There are a few ways to implement this function. Let’s go with the obvious one first.</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">constantThree ::</span> <span class="dt">MyInt</span> <span class="ot">-&gt;</span> <span class="dt">MyInt</span>
+constantThree x <span class="fu">=</span> <span class="dt">Three</span></code></pre></div>
+<p>This function takes x as an argument, never uses it, and just returns the <code>Three</code> value. Since we don’t use the x value, we can simply use <code>_</code> to avoid naming an unnecessary parameter.</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">constantThree' ::</span> <span class="dt">MyInt</span> <span class="ot">-&gt;</span> <span class="dt">MyInt</span>
+constantThree' _ <span class="fu">=</span> <span class="dt">Three</span></code></pre></div>
+<p>The behaviour of this function is exactly the same as the previous one, we return Three, without even evaluating the parameter.</p>
+<p>Let’s take even more ways to define this function:</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="co">-- With pattern matching</span>
+<span class="ot">constantThree'' ::</span> <span class="dt">MyInt</span> <span class="ot">-&gt;</span> <span class="dt">MyInt</span>
+constantThree'' <span class="dt">One</span> <span class="fu">=</span> <span class="dt">Three</span>
+constantThree'' <span class="dt">Two</span> <span class="fu">=</span> <span class="dt">Three</span>
+constantThree'' <span class="dt">Three</span> <span class="fu">=</span> <span class="dt">Three</span>
+
+<span class="co">-- With case construct</span>
+<span class="ot">constantThree''' ::</span> <span class="dt">MyInt</span> <span class="ot">-&gt;</span> <span class="dt">MyInt</span>
+constantThree''' x <span class="fu">=</span> <span class="kw">case</span> x <span class="kw">of</span>
+  <span class="dt">One</span> <span class="ot">-&gt;</span> <span class="dt">Three</span>
+  <span class="dt">Two</span> <span class="ot">-&gt;</span> <span class="dt">Three</span>
+  <span class="dt">Three</span> <span class="ot">-&gt;</span> <span class="dt">Three</span>
+
+<span class="co">{- Another possible implementation is</span>
+
+<span class="co">constantThree''' :: MyInt -&gt; MyInt</span>
+<span class="co">constantThree''' x = </span>
+<span class="co">  case x of</span>
+<span class="co">    One -&gt; Three</span>
+<span class="co">    Two -&gt; Three</span>
+<span class="co">    Three -&gt; Three</span>
+
+<span class="co">All the cases have to be indented exactly the same.</span>
+<span class="co">-}</span></code></pre></div>
+<p>The pattern match takes the argument and tries to match the constructor. It matches the value going line by line.</p>
+<p>Let’s make a function for cycling the values.</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">cycleMyInt ::</span> <span class="dt">MyInt</span> <span class="ot">-&gt;</span> <span class="dt">MyInt</span>
+cycleMyInt <span class="dt">One</span> <span class="fu">=</span> <span class="dt">Two</span>
+cycleMyInt <span class="dt">Two</span> <span class="fu">=</span> <span class="dt">Three</span>
+cycleMyInt _ <span class="fu">=</span> <span class="dt">One</span></code></pre></div>
+<p>We can avoid pattern matching the last line, as we already covered all the other cases, so we are definitely matching only the <code>Three</code> case.</p>
+<p>Since the order of the lines matters, let’s make another similar function, with the lines switched around.</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">cycleMyInt' ::</span> <span class="dt">MyInt</span> <span class="ot">-&gt;</span> <span class="dt">MyInt</span>
+cycleMyInt' _ <span class="fu">=</span> <span class="dt">One</span>
+cycleMyInt' <span class="dt">One</span> <span class="fu">=</span> <span class="dt">Two</span>
+cycleMyInt' <span class="dt">Two</span> <span class="fu">=</span> <span class="dt">Three</span></code></pre></div>
+<p>This will have a different effect. It will match always the first line, having in output always <code>One</code>. If you are not sure, try the following examples:</p>
+<ul>
+<li><code>cycleMyInt One</code></li>
+<li><code>cycleMyInt' One</code></li>
+</ul>
+<p>Since the case indentation rules are quite similar to the let ones, a bit more info is over to: <a href="https://en.wikibooks.org/wiki/Haskell/Indentation">Indentation</a>. A pattern match and a case expression are translated in the same construct, except, pattern matches can be seen by where definitions, while cases can’t, more on this next lesson, as we pattern match product types.</p>
+<p>Anyway, these two functions behave in the same way as the first two, but differ in the evaluation method. These two functions will evaluate their argument before giving out <code>Three</code>, while the first two will simply ignore it.</p>
+<h5 id="undefined"><code>undefined</code></h5>
+<p>Side note about <code>undefined</code>: This value has type <code>a</code>, meaning it can fill any type. Undefined represents a non termination, and will throw an exception when evaluated. As such, it cannot ever be pattern matched, because pattern matching forces an evaluation of the value. Pattern matching such value could mean solving the Halting problem, something already proven to be impossible to do.</p>
+<p>You can replicate the undefined behaviour without an exception by simply defining:</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">undef ::</span> a
+undef <span class="fu">=</span> undef</code></pre></div>
+<p>Which will trigger an infinite tail-recursion, meaning no value can ever be extracted from it, making it effectively an infinite loop.</p>
+<p>It’s useful to determine whether something is ever evaluated or not.</p>
+<p>For example, in the REPL, after loading the file with those definitions:</p>
+<ul>
+<li><code>constantThree undefined</code></li>
+<li><code>constantThree' undefined</code></li>
+<li><code>constantThree'' undefined</code></li>
+<li><code>constantThree''' undefined</code></li>
+<li><code>constantThree undef</code></li>
+<li><code>constantThree'' undef</code> – Type Ctrl+C to interrupt the evaluation.</li>
+</ul>
+<p>The first two functions will work without fail, while the next two, will throw an exception, writing out <code>Prelude.undefined</code>. The last one will hang indefinitely. For now, we won’t be going in depth over this, but it’s an insight on the Haskell evaluation strategy.</p>
+<h5 id="const-function"><code>const</code> function</h5>
+<p>Let’s see yet another method of defining constantThree, with something we’ll see more and more later.</p>
+<p>First, the definition:</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">constThree ::</span> <span class="dt">MyInt</span> <span class="ot">-&gt;</span> <span class="dt">MyInt</span> 
+constThree <span class="fu">=</span> const <span class="dt">Three</span></code></pre></div>
+<p>Now, for the const signature and definition:</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">const<span class="ot"> ::</span> a <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> a
+const x _ <span class="fu">=</span> x</code></pre></div>
+<p>Let’s rewrite const in the lambda form:</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">const' ::</span> a <span class="ot">-&gt;</span> b <span class="ot">-&gt;</span> a
+const' <span class="fu">=</span> \x <span class="ot">-&gt;</span> \_ <span class="ot">-&gt;</span> x <span class="co">-- Also written as '\x _ -&gt; x' </span>
+                       <span class="co">-- But this will be more explicative</span></code></pre></div>
+<p>Now, we expressed the const function in terms of nested lambdas, to explicitate the currying property of Haskell functions (meaning multiple parameters are passed one by one, in different calls). Now we use partial application (the ability to use the function with only some parameters passed), to get an intermediate function which fits out constThree behaviour.</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell">const' <span class="dt">Three</span>
+(\x <span class="ot">-&gt;</span> \_ <span class="ot">-&gt;</span> x) <span class="dt">Three</span>
+(\_ <span class="ot">-&gt;</span> <span class="dt">Three</span>)         <span class="co">-- We substituted the x with the parameter Three</span></code></pre></div>
+<p>The result is a lambda function which, given a paramter, gives out the value <code>Three</code>. Also of note, is the process of <a href="https://wiki.haskell.org/Reified_type">reification</a>. The lambda function has type: <code>(\_ -&gt; Three) :: a -&gt; MyInt</code> but, assigning it to constThree, we specialize the definition (reify) to <code>(\_ -&gt; Three) :: MyInt -&gt; MyInt</code></p>
+<h4 id="adts">ADTs</h4>
+<p>An <a href="https://en.wikipedia.org/wiki/Algebraic_data_type">ADT (Algebraic data type)</a> is a composite type. There are two classes of types:</p>
+<ul>
+<li>Sum Types</li>
+<li>Product Types</li>
+</ul>
+<p>When we defined <code>MyInt</code> we defined an ADT, using only Sum types, using the symbol <code>|</code> to differentiate between the values.</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">MyInt</span> <span class="fu">=</span>
+    <span class="dt">One</span>
+  <span class="fu">|</span> <span class="dt">Two</span>
+  <span class="fu">|</span> <span class="dt">Three</span>
+  <span class="kw">deriving</span> (<span class="dt">Show</span>)</code></pre></div>
+<p>A product type is instead defined by writing out the type names of the fields in the constructor.</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">MyIntPair</span> <span class="fu">=</span> <span class="dt">MyPair</span> <span class="dt">MyInt</span> <span class="dt">MyInt</span>
+  <span class="kw">deriving</span> (<span class="dt">Show</span>)</code></pre></div>
+<p>This builds a constructor of type:</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="dt">MyPair</span><span class="ot"> ::</span> <span class="dt">MyInt</span> <span class="ot">-&gt;</span> <span class="dt">MyInt</span> <span class="ot">-&gt;</span> <span class="dt">MyIntPair</span></code></pre></div>
+<p>We need two MyInt values to instantiate a MyIntPair value.</p>
+<p>Try looking at the types of these expression, by typing first <code>:t</code> and then the expression, separated by space. Like <code>:t MyPair</code>.</p>
+<ul>
+<li><code>MyPair</code></li>
+<li><code>MyPair One</code></li>
+<li><code>MyPair One Two</code></li>
+<li><code>Two</code></li>
+</ul>
+<p>And now, try the expression <code>MyPair One Two</code> without the type command.</p>
+<p>Let’s try pattern matching over this pair, by writing a function that takes the maximum number out of the pair.</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">myPairMax ::</span> <span class="dt">MyIntPair</span> <span class="ot">-&gt;</span> <span class="dt">MyInt</span>
+myPairMax (<span class="dt">MyPair</span> <span class="dt">Three</span> _) <span class="fu">=</span> <span class="dt">Three</span>
+myPairMax (<span class="dt">MyPair</span> _ <span class="dt">Three</span>) <span class="fu">=</span> <span class="dt">Three</span>
+myPairMax (<span class="dt">MyPair</span> <span class="dt">Two</span> _) <span class="fu">=</span> <span class="dt">Two</span>
+myPairMax (<span class="dt">MyPair</span> _ <span class="dt">Two</span>) <span class="fu">=</span> <span class="dt">Two</span>
+myPairMax _ <span class="fu">=</span> <span class="dt">One</span></code></pre></div>
+<p>So, we first match if the first value is <code>Three</code>, then we move out to see if the other value is <code>Three</code>. If we fall through both lines, we know that there are no <code>Three</code> values in the pair, so we move to check if there is a <code>Two</code> value in either field, and if not, it means we have only <code>One</code> values, which lets us ignore the pair altogether, as it’s the only case left.</p>
+<p>Let’s now try, and use both types of ADTs.</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">TheInts</span> <span class="fu">=</span> 
+    <span class="dt">TheInt</span> <span class="dt">MyInt</span>
+  <span class="fu">|</span> <span class="dt">ThePair</span> <span class="dt">MyIntPair</span>
+  <span class="kw">deriving</span> (<span class="dt">Show</span>)
+
+<span class="ot">t1 ::</span> <span class="dt">TheInts</span>
+t1 <span class="fu">=</span> <span class="dt">TheInt</span> <span class="dt">Three</span>
+
+<span class="ot">t2 ::</span> <span class="dt">TheInts</span>
+t2 <span class="fu">=</span> <span class="dt">ThePair</span> (<span class="dt">MyPair</span> <span class="dt">Two</span> <span class="dt">Three</span>)
+
+<span class="ot">t3 ::</span> <span class="dt">TheInts</span>
+t3 <span class="fu">=</span> <span class="dt">ThePair</span> (<span class="dt">MyPair</span> <span class="dt">Two</span> <span class="dt">One</span>)</code></pre></div>
+<p>So, we now have a value that can either hold a <code>MyInt</code> or a <code>MyIntPair</code>. Let’s define a function to extract the <code>MyInt</code> in case there is only one, and the maximum of the pair, in case of a <code>MyIntPair</code>.</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="ot">theIntsFun ::</span> <span class="dt">TheInts</span> <span class="ot">-&gt;</span> <span class="dt">MyInt</span>
+theIntsFun (<span class="dt">TheInt</span> x) <span class="fu">=</span> x
+theIntsFun (<span class="dt">ThePair</span> x) <span class="fu">=</span> result
+  <span class="kw">where</span> result <span class="fu">=</span> myPairMax x</code></pre></div>
+<p>So we pattern match both cases, getting different value types, so that we can perform different function of those. The where is only relative to the current pattern match.</p>
+<p>Try now playing with those. A few example expressions:</p>
+<ul>
+<li><code>theIntsFun t1</code></li>
+<li><code>theIntsFun t2</code></li>
+<li><code>theIntsFun t3</code></li>
+</ul>
+<p>And for now that is all.</p>
+<p>Except maybe, for some extra optional part, which is not fundamental for understanding ADTs.</p>
+<h5 id="extra-cardinality-of-adts">Extra: Cardinality of ADTs</h5>
+<p>First of all, the <a href="https://en.wikipedia.org/wiki/Cardinality">cardinality</a> of a set is the number of elements the set contains.</p>
+<p>Considering an unit data type, defined in Prelude as such:</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">data</span> () <span class="fu">=</span> ()</code></pre></div>
+<p>This is a type with only one constructor, and no fields. It’s called unit type, because the cardinality of this type is equal to 1.</p>
+<p>Let’s now consider our <code>MyInt</code> type:</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">MyInt</span> <span class="fu">=</span> 
+    <span class="dt">One</span>
+  <span class="fu">|</span> <span class="dt">Two</span>
+  <span class="fu">|</span> <span class="dt">Three</span></code></pre></div>
+<p>We have three different constructors, separated by the <code>|</code> symbol. Each constructor has a cardinality of 1, since they are unit types, and we know that <code>MyInt</code> has a total cardinality of 3. So, we can build the expression <code>1 | 1 | 1 = 3</code> which means, our <code>|</code> symbol sums the cardinality of the different constructors. We can rewrite it as <code>1+1+1=3</code>, or <code>card(MyInt) = card(One) + card(Two) + card(Three)</code>.</p>
+<p>Now, let’s go over to <code>MyIntPair</code>.</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">MyIntPair</span> <span class="fu">=</span> 
+    <span class="dt">MyPair</span> <span class="dt">MyInt</span> <span class="dt">MyInt</span></code></pre></div>
+<p>We have only one constructor, so the cardinality for the constructor itself is 1. We know that the cardinality of <code>MyInt</code> is 3. Now, how many possible different pairs we could do, using the values of <code>MyInt</code>?</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="dt">MyPair</span> <span class="dt">One</span> <span class="dt">One</span>
+<span class="dt">MyPair</span> <span class="dt">One</span> <span class="dt">Two</span>
+<span class="dt">MyPair</span> <span class="dt">One</span> <span class="dt">Three</span>
+<span class="dt">MyPair</span> <span class="dt">Two</span> <span class="dt">One</span>
+<span class="dt">MyPair</span> <span class="dt">Two</span> <span class="dt">Two</span>
+<span class="dt">MyPair</span> <span class="dt">Two</span> <span class="dt">Three</span>
+<span class="dt">MyPair</span> <span class="dt">Three</span> <span class="dt">One</span>
+<span class="dt">MyPair</span> <span class="dt">Three</span> <span class="dt">Two</span>
+<span class="dt">MyPair</span> <span class="dt">Three</span> <span class="dt">Three</span></code></pre></div>
+<p>In total we have 9 pairs. So, we have an operator to which our expression: <code>1 ? 3 ? 3 = 9</code>.</p>
+<p>Since you might remember these are called Product types, our operator here is <code>*</code>. So, we multiply the cardinalities of each field in the constructor.</p>
+<pre><code>card(MyIntPair) = card (MyPair) * card (MyInt) * card (MyInt)</code></pre>
+<p>Now, let’s combine the two and use the definition:</p>
+<div class="sourceCode"><pre class="sourceCode haskell"><code class="sourceCode haskell"><span class="kw">data</span> <span class="dt">TheInts</span> <span class="fu">=</span> 
+    <span class="dt">TheInt</span> <span class="dt">MyInt</span>
+  <span class="fu">|</span> <span class="dt">ThePair</span> <span class="dt">MyIntPair</span></code></pre></div>
+<p>We have the expression:</p>
+<pre><code>card(TheInts) =
+    card (TheInt) * card(MyInt)
+  + card (ThePair) * card(MyIntPair)
+
+card(TheInt) = 1
+card(MyInt) = 3
+card(ThePair) = 1
+card(MyIntPair) = 9
+
+card(TheInts) =
+    1 * 3
+  + 1 * 9
+  = 3 + 9 = 12</code></pre>
+<p>So 12 is the cardinality of the type <code>TheInts</code>. And now you know how to calculate the cardinality of non recursive types. Recursive types are infinite in cardinality, but that is beyond the scope of this course, really.</p>
+<h4 id="further-reading">Further reading</h4>
+<p><a href="https://en.wikibooks.org/wiki/Haskell/Type_declarations">Type declarations</a></p>
+<p>As always, any questions or doubts are to be left in <a href="https://euphoria.io/room/haskell/">&amp;haskell</a>, where I’ll routinely check and reply.</p>
+
+        </div>
+        <div id="footer">
+            Site proudly generated by
+            <a href="http://jaspervdj.be/hakyll">Hakyll</a>
+        </div>
+    </body>
+</html>
